@@ -31,7 +31,7 @@ export const CreditCard = ({name = "Paulo V Ferreira"}) => {
   function cardReset(event) {
     const card = cardEl.current
     if(card) {
-      card.style.transform = `perspective(500px) rotateX(0) rotateY(0)`
+      card.style.transform = `perspective(500px) rotateX(0deg) rotateY(0deg)`
       cardTransition()
     } 
   }
