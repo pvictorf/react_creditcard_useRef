@@ -3,7 +3,7 @@ import { CreditCard } from "./components/CreditCard";
 
 const App = () => {
   return (
-    <div style={{margin: '2rem'}}>
+    <div>
       <CreditCard />
     </div>
   );
