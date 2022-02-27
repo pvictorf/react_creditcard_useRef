@@ -1,15 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 export const CreditCard = ({name = "Paulo V Ferreira"}) => {
   const cardEl = useRef(null);
   const cardTransitionRef = useRef();
-   
-  useEffect(() => {
-    cardEl.current?.addEventListener('mousemove', cardEffect)
-    cardEl.current?.addEventListener('mouseleave', cardReset)
-    cardEl.current?.addEventListener('mouseenter', cardEnter)
-  })
- 
+    
   function cardEffect(event) {
     const card = cardEl.current;
     if(card) {
@@ -19,7 +13,7 @@ export const CreditCard = ({name = "Paulo V Ferreira"}) => {
       const centerY = card.offsetTop + cardHeight / 2
       const positionX = event.clientX - centerX
       const positionY = event.clientY - centerY
-      const perspective = 20;
+      const perspective = 50;
 
       const rotateX = ((+1) * perspective * positionY / (cardHeight / 2)).toFixed(2)
       const rotateY = ((-1) * perspective * positionX / (cardHeight / 2)).toFixed(2)
@@ -28,26 +22,32 @@ export const CreditCard = ({name = "Paulo V Ferreira"}) => {
     }
   }
 
-  function cardReset(event) {
-    const card = cardEl.current
-    if(card) {
-      card.style.transform = `perspective(500px) rotateX(0deg) rotateY(0deg)`
-      cardTransition()
-    } 
-  }
-
-  function cardTransition(milleseconds = 400) {
+  const cardTransition = useCallback((milleseconds = 400) => {
     const card = cardEl.current
     if(card) {  
       if(cardTransitionRef.current) clearTimeout(cardTransitionRef.current);
       card.style.transition = `transform ${milleseconds}ms`
       cardTransitionRef.current = setTimeout(() => { card.style.transition = ''}, milleseconds) 
     }
-  }
+  }, [])
 
-  function cardEnter() {
+  const cardEnter = useCallback(() => {
     cardTransition()
-  }
+  }, [cardTransition]) 
+
+  const cardBack = useCallback((event) => {
+    const card = cardEl.current
+    if(card) {
+      card.style.transform = `perspective(500px) rotateX(0deg) rotateY(0deg)`
+      cardTransition()
+    } 
+  }, [cardTransition])
+
+  useEffect(() => {
+    cardEl.current?.addEventListener('mousemove', cardEffect)
+    cardEl.current?.addEventListener('mouseenter', cardEnter)  
+    cardEl.current?.addEventListener('mouseleave', cardBack)    
+  }, [cardEnter, cardBack])
 
   return (
     <div className='creditcard' ref={cardEl} >
