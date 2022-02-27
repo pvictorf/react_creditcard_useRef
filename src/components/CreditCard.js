@@ -46,7 +46,8 @@ export const CreditCard = ({name = "Paulo V Ferreira"}) => {
   useEffect(() => {
     cardEl.current?.addEventListener('mousemove', cardEffect)
     cardEl.current?.addEventListener('mouseenter', cardEnter)  
-    cardEl.current?.addEventListener('mouseleave', cardBack)    
+    cardEl.current?.addEventListener('mouseleave', cardBack)   
+    
   }, [cardEnter, cardBack])
 
   return (
